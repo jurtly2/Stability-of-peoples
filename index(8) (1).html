@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Stability of Peoples</title>
+<style>
+:root{
+  --paper:#fbf3e4;--paper2:#f3e5cc;--ink:#15211b;--muted:#657066;--line:#dcc8a8;
+  --smith:#8a4c25;--smithSoft:#fff5e6;--plain:#315c83;--plainSoft:#eef6ff;
+  --stab:#164b35;--stab2:#246b4d;--stabSoft:#eff9f2;--gold:#d39b32;--rose:#9d4358;--bottom:72px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:linear-gradient(180deg,var(--paper),var(--paper2));font-family:Georgia,'Times New Roman',serif;line-height:1.6}
+button{font-family:inherit}
+.page{display:none}.page.active{display:block}
+.top{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px clamp(14px,4vw,38px);background:rgba(251,243,228,.96);border-bottom:1px solid rgba(21,33,27,.14);box-shadow:0 8px 28px rgba(21,33,27,.08)}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink)}
+.mark{width:44px;height:44px;display:grid;place-items:center;border-radius:16px;background:var(--stab);color:white;font-weight:950}
+.brand-title{font-weight:950}.brand-sub{font-size:.8rem;color:var(--muted)}
+.nav{display:flex;gap:8px}
+.nav a,.btn{border:1px solid var(--line);background:#fff;text-decoration:none;color:var(--ink);padding:9px 13px;border-radius:999px;font-weight:850;cursor:pointer}
+.nav a.active{background:var(--ink);color:#fff}
+.bottom{display:none}
+.shell{width:min(1180px,100%);margin:auto;padding:26px 18px 64px}
+.hero{padding:clamp(28px,6vw,58px) 0 20px}
+.eyebrow{margin:0 0 10px;color:var(--rose);font-weight:950;letter-spacing:.12em;text-transform:uppercase;font-size:.76rem}
+h1{margin:0;font-size:clamp(2.25rem,7vw,5rem);line-height:.96;letter-spacing:-.05em}
+.lede{max-width:800px;font-size:clamp(1.06rem,2.2vw,1.38rem);color:#3c4841;margin:18px 0 0}
+.card{border:1px solid var(--line);border-radius:24px;padding:22px;margin-bottom:16px;background:rgba(255,253,250,.84);box-shadow:0 12px 28px rgba(21,33,27,.07)}
+.card h2{margin-top:0}.importance{border-left:8px solid var(--smith)}.purpose{border-left:8px solid var(--stab)}.data{border-left:8px solid var(--plain)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.primary{background:linear-gradient(145deg,var(--stab),var(--stab2));color:#fff}.secondary{background:#fff}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:15px}
+.step{border:1px solid var(--line);border-radius:18px;background:white;padding:12px;text-align:center;white-space:nowrap;font-weight:850}.step span{color:var(--stab);font-weight:950}
+.reader{display:grid;grid-template-columns:220px minmax(0,1fr) 340px;gap:20px;align-items:start}
+.side,.margin{position:sticky;top:88px;border:1px solid var(--line);border-radius:22px;background:rgba(255,253,250,.9);padding:14px;box-shadow:0 12px 28px rgba(21,33,27,.07);max-height:calc(100vh - 108px);overflow:auto}
+.side h2,.margin h2{font-size:1.05rem;margin:0 0 8px}.side p,.empty p{font-size:.92rem;color:var(--muted);margin:0 0 10px}
+.sections-shell{position:sticky;top:88px;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;max-height:none!important;overflow:visible!important}
+.sections-main-toggle{width:100%;justify-content:center}
+.sections-drawer{display:none;margin-top:10px;border:1px solid var(--line);border-radius:22px;background:rgba(255,253,250,.93);box-shadow:0 12px 28px rgba(21,33,27,.07);padding:14px}
+.sections-drawer.open{display:block}
+.secbtn{width:100%;display:flex;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:16px;background:var(--smithSoft);padding:11px;text-align:left;font-weight:950;cursor:pointer}
+.secbtn small{display:block;color:var(--muted);font-weight:700}
+.passages{display:none;padding:8px 0}.passages.open{display:block}
+.passages button{width:100%;text-align:left;border:0;background:transparent;border-radius:12px;padding:9px;cursor:pointer;font-weight:850}
+.passages button:hover,.passages button.active{background:#fff}
+.book{background:#fffdf8!important;border-radius:0!important;padding:clamp(18px,3vw,42px)!important;box-shadow:none!important}
+.book-head{text-align:center;border-bottom:1px solid rgba(21,33,27,.15);padding-bottom:18px;margin:0 auto 24px;max-width:760px}
+.book-head h2{margin:0;font-size:clamp(1.8rem,4vw,3rem)}.book-head p{color:var(--muted);max-width:620px;margin:8px auto 0}
+.book-text{max-width:760px;margin:0 auto;font-size:clamp(1.06rem,2.1vw,1.24rem);line-height:1.88}
+.para{position:relative;margin:0 0 1.4em;padding-right:46px}.para p{margin:0}
+.star{position:absolute;right:0;top:.1em;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:#fff8e9;color:var(--smith);display:grid;place-items:center;cursor:pointer;font-weight:950;box-shadow:0 6px 14px rgba(21,33,27,.08)}
+.star.active{background:var(--stab);color:#fff}
+.margin-explainer{max-width:760px;margin:0 auto 22px;padding:14px 16px;border:1px solid var(--line);border-left:6px solid var(--smith);border-radius:18px;background:#fff8e9;font-size:.98rem}
+.read-bottom-controls{max-width:760px;margin:28px auto 0;padding-top:18px;border-top:1px solid rgba(21,33,27,.14);display:flex;justify-content:space-between;gap:12px}
+.read-bottom-controls button{min-width:120px}
+.note{border:0!important;border-radius:18px!important;background:#fff;padding:14px;margin-bottom:12px;box-shadow:0 8px 18px rgba(21,33,27,.06)}
+.note h3{margin:0 0 8px;color:var(--stab);text-transform:uppercase;font-size:.74rem!important;letter-spacing:.11em!important}
+.note.plain{background:linear-gradient(180deg,#e9f4ff,#fff)!important;border-top:6px solid var(--plain)!important}
+.note.challenge{background:linear-gradient(180deg,#fff2d9,#fff)!important;border-top:6px solid var(--gold)!important}
+.note.answer{background:linear-gradient(180deg,#e8f8ee,#fff)!important;border-top:8px solid var(--stab)!important}
+.note.chart{background:linear-gradient(180deg,#eaf1ff,#fff)!important;border-top:8px solid #263b73!important}
+.note.takeaway{background:linear-gradient(180deg,#e3f6eb,#fff)!important;border:2px solid rgba(22,75,53,.22)!important}
+.note-flow-cue{text-align:center;color:var(--muted);font-weight:950;margin:-5px 0 7px}
+.eg{display:grid;gap:8px}.eg div{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px}.eg strong{display:block;color:var(--smith);margin-bottom:4px}
+.svg-line-chart{width:100%;height:auto;display:block;background:#fff;border:1px solid rgba(49,92,131,.18);border-radius:16px;margin:12px 0}
+.chart-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 10px;font-size:.86rem}.legend-item{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.legend-swatch{width:18px;height:4px;border-radius:999px;background:#315c83}.legend-swatch.income{background:#164b35}
+.chart-source{font-size:.82rem;color:var(--muted);border-top:1px solid rgba(21,33,27,.12);padding-top:8px;margin-top:8px}
+.chartnote{color:var(--muted);font-size:.86rem}.doctrine-line{font-size:clamp(1.08rem,2vw,1.38rem);font-weight:950;line-height:1.28;color:var(--stab)}
+.mactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.mactions .primary{width:100%}
+.list{display:grid;gap:12px}.doctrine{counter-increment:item;display:grid;grid-template-columns:48px 1fr;gap:14px;border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff}.list.doctrines{counter-reset:item}
+.doctrine:before{content:counter(item);display:grid;place-items:center;width:42px;height:42px;border-radius:15px;background:var(--stab);color:#fff;font-weight:950}
+.gloss{display:grid;grid-template-columns:180px 1fr;gap:14px;padding:18px;border-radius:20px;border:1px solid var(--line);background:#fff}.term{font-weight:950;color:var(--smith)}
+.sheet{display:none;position:fixed;left:0;right:0;bottom:var(--bottom);z-index:90;background:rgba(251,243,228,.98);border-top:1px solid var(--line);box-shadow:0 -18px 45px rgba(21,33,27,.22);max-height:72vh;overflow:auto;padding:14px}.sheet.open{display:block}
+.sheethead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.sheethead h2{font-size:1.1rem;margin:0}
+@media(max-width:1060px){.reader{grid-template-columns:210px 1fr}.margin{display:none}}
+@media(max-width:760px){
+  body{padding-bottom:var(--bottom)}.nav{display:none}.top{position:relative}.brand-sub{display:none}
+  .bottom{position:fixed;bottom:0;left:0;right:0;z-index:80;height:var(--bottom);display:grid;grid-template-columns:repeat(3,1fr);background:rgba(251,243,228,.96);border-top:1px solid rgba(21,33,27,.16);box-shadow:0 -10px 30px rgba(21,33,27,.12)}
+  .bottom a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;font-size:.73rem;font-weight:900}.bottom a.active{color:var(--stab)}
+  .shell{text-align:center;padding:18px 14px 38px}.reader,.steps,.gloss{grid-template-columns:1fr}.sections-shell{position:relative;top:auto;text-align:left}
+  .book{text-align:left;padding:18px 12px!important}.book-head{text-align:center}.para{padding-right:0}.star{position:static;display:inline-grid;margin-top:10px}
+  .lede{margin-left:auto;margin-right:auto}.actions{justify-content:center}.step{white-space:normal}
+  .read-bottom-controls{flex-direction:column}.read-bottom-controls button{width:100%}
+}
+@media print{.top,.bottom,.side,.margin,.sheet,.star{display:none!important}body{background:#fff;color:#000;padding:0}.page{display:block!important}.shell{max-width:100%;padding:0}.hero,.card,.book{box-shadow:none;border-color:#999;background:#fff}}
+
+/* V5: close/continue behavior + generic indexed line chart polish */
+.margin-empty-reset{
+  border:1px dashed var(--line);
+  border-radius:18px;
+  padding:16px;
+  background:#fffdf8;
+}
+.chart-subnote{
+  font-size:.82rem;
+  color:var(--muted);
+  margin-top:-4px;
+}
+
+.sheet,
+#sheetBody {
+  scroll-behavior: auto !important;
+}
+
+
+/* Hour update: start entry, reader onboarding, examples good/bad */
+.start-entry-card{text-align:center;border-left:8px solid var(--stab)}
+.start-entry-card .actions{justify-content:center}
+.before-begin{max-width:760px;margin:0 auto 22px;padding:18px 18px;border:2px solid rgba(22,75,53,.22);border-left:10px solid var(--stab);border-radius:22px;background:linear-gradient(180deg,#e8f8ee,#fffdf8);box-shadow:0 12px 28px rgba(21,33,27,.07)}
+.before-begin h2{margin:0 0 8px;font-size:1.28rem}
+.before-begin p{margin:0 0 14px}
+.eg .good{background:linear-gradient(180deg,#e8f8ee,#fff)!important;border-left:7px solid var(--stab)!important}
+.eg .bad{background:linear-gradient(180deg,#ffe9e9,#fff)!important;border-left:7px solid #9d2f2f!important}
+.eg .warning{background:linear-gradient(180deg,#fff2d9,#fff)!important;border-left:7px solid var(--gold)!important}
+
+
+/* Passage 1 evidence cards */
+.fact-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:12px 0;
+}
+.fact-card{
+  border:1px solid rgba(21,33,27,.14);
+  border-radius:18px;
+  background:#fff;
+  padding:14px;
+  box-shadow:0 8px 18px rgba(21,33,27,.05);
+}
+.fact-card .flabel{
+  font-size:.75rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.fact-card .fvalue{
+  font-size:1.45rem;
+  line-height:1.08;
+  color:var(--stab);
+  font-weight:950;
+  margin-bottom:8px;
+}
+.fact-card .fcaption{
+  font-size:.88rem;
+  color:#3c4841;
+}
+@media(max-width:760px){
+  .fact-cards{grid-template-columns:1fr}
+}
+
+
+/* Evidence chart polish update */
+.vchart{
+  display:grid;
+  gap:14px;
+  margin:16px 0;
+}
+.vchart .row{
+  display:grid;
+  grid-template-columns:58px 1fr auto;
+  align-items:center;
+  gap:10px;
+  font-weight:850;
+}
+.vchart .track{
+  height:28px;
+  border-radius:999px;
+  background:#eef2ee;
+  overflow:hidden;
+  border:1px solid rgba(21,33,27,.12);
+}
+.vchart .fill{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--stab),var(--stab2));
+}
+.vchart .val{
+  font-size:1.12rem;
+  color:var(--stab);
+  font-weight:950;
+}
+.meaning-note{
+  border:1px solid rgba(22,75,53,.2);
+  border-left:7px solid var(--stab);
+  background:linear-gradient(180deg,#f0fbf3,#fff);
+  border-radius:16px;
+  padding:12px;
+  margin-top:12px;
+  font-size:.92rem;
+}
+@media(max-width:760px){
+  .vchart .row{grid-template-columns:1fr}
+  .vchart .track{height:24px}
+}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#start"><div class="mark">SP</div><div><div class="brand-title">The Stability of Peoples</div><div class="brand-sub">Smith is the book. Stability is the margin.</div></div></a>
+  <nav class="nav"><a data-route="start" href="#start">Start</a><a data-route="read" href="#read">Read</a><a data-route="ideas" href="#ideas">Our Ideas</a></nav>
+</header>
+<nav class="bottom"><a data-route="start" href="#start"><span>⌂</span>Start</a><a data-route="read" href="#read"><span>☰</span>Read</a><a data-route="ideas" href="#ideas"><span>◆</span>Ideas</a></nav>
+<main>
+  <section class="page active" id="page-start">
+    <div class="shell">
+      <section class="hero">
+        <!---- <p class="eyebrow"></p>  Just in case I ever want to use this --> 
+        <h1>The Stability of Peoples</h1>
+        <p class="lede">I am rereading Adam Smith’s <em>The Wealth of Nations</em> and answering it with <em>The Stability of Peoples</em>: a plain-language doctrine asking whether wealth creates stable life for people, land, and future generations.</p>
+      </section>
+      <section class="card importance"><h2>Why are we reading this old book?</h2><p><em>The Wealth of Nations</em> helped shape how the modern world talks about wealth, labor, production, markets, trade, growth, taxes, debt, and national success.</p></section>
+      <section class="card purpose"><h2>How this site works</h2><p>Read Smith in the center. Open the margin notes when you want help. The notes explain the plain meaning, our answer, evidence, and the next step.</p><div class="steps"><div class="step"><span>1.</span> Read Smith</div><div class="step"><span>2.</span> Open margin note</div><div class="step"><span>3.</span> Read our answer</div><div class="step"><span>4.</span> Continue reading</div></div></section>
+      <section class="card data"><h2>How do we keep it honest?</h2><p>Each major response includes examples, safeguards, and evidence we can check. Charts are added only where credible data exists and the chart helps the argument.</p></section>
+      <section class="card purpose start-entry-card"><h2>Ready to begin?</h2><p>Now enter the reader and begin with Smith’s original introduction.</p><div class="actions"><a class="btn primary" href="#read">Enter the Reader →</a></div></section>
+    </div>
+  </section>
+  <section class="page" id="page-read">
+    <div class="shell">
+      
+      <div class="before-begin no-print"><h2>Before you begin</h2><p><strong>Read Smith like a book.</strong> The ✦ mark opens the margin notes when you want the plain meaning, our answer, evidence, and takeaway.</p></div>
+      
+      <div class="reader">
+        <aside class="side no-print sections-shell"><button class="btn secondary sections-main-toggle" id="sectionsToggle">☰ Sections</button><div class="sections-drawer" id="sectionsDrawer"><h2>Sections</h2><p>Open a section and jump to a part of the text.</p><div id="sectionNav"></div></div></aside>
+        <article class="book"><div id="bookRoot"></div><div class="read-bottom-controls no-print"><button class="btn secondary" id="readPrev">← Back</button><button class="btn primary" id="readNext">Next →</button></div></article>
+        <aside class="margin" id="margin"><div class="empty"><h2>Margin notes</h2><p>Select a margin mark beside Smith’s text. This side panel will show the plain meaning, our answer, examples, evidence, and takeaway.</p></div></aside>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="page-ideas"><div class="shell"><section class="hero"><p class="eyebrow">Our ideas</p><h1>Doctrine so far</h1><p class="lede">Written plainly for all peoples, not only educated readers.</p></section><section id="doctrine"></section><section class="card no-print"><button class="btn primary" onclick="window.print()">Print / Save as PDF</button></section></div></section>
+  <section class="page" id="page-help"><div class="shell"><section class="hero"><p class="eyebrow">Word help</p><h1>Glossary</h1><p class="lede">Old economic words translated into plain language.</p></section><section id="glossary"></section></div></section>
+</main>
+<section class="sheet" id="sheet"><div class="sheethead"><h2>Margin note</h2><button class="btn" id="closeSheet">Close</button></div><div id="sheetBody"></div></section>
+<script>window.SOP_DATA = {"project": {"title": "The Stability of Peoples", "subtitle": "A guided rereading of The Wealth of Nations", "modeLabels": {"exact": "Exact Smith", "plain": "Plain Smith", "compare": "Compare", "answer": "Our Answer"}, "plainPurpose": "This doctrine is written plainly for all peoples, not only educated readers. If an idea is meant to serve everyone, the words must be reachable by everyone.", "importanceIntro": {"title": "Why reread The Wealth of Nations?", "body": "We are not reading Adam Smith as a dead historical author. We are reading him because the modern world still lives inside many of the questions his work helped make normal: How do nations grow? How should labor be organized? How do markets, trade, capital, public revenue, and debt shape national success? The Wealth of Nations did not create modern economics by itself, but it became one of the great source texts behind wealth-centered economic common sense. That is why The Stability of Peoples answers it directly. If we are living inside a world shaped by wealth-centered doctrine, then we must ask whether wealth has actually created stable life for people, land, and future generations.", "example1": "Smith’s division of labor still echoes in factories, warehouses, offices, logistics, and supply chains: one person does one part, another person does another part, and the whole system produces more.", "example2": "Smith argued that national wealth is not just gold or money, but what people produce and trade. Today countries still judge themselves by production, trade, GDP, jobs, markets, and growth."}}, "passages": [{"id": "intro-01", "section": "Introduction", "number": "Passage 1 of 6", "title": "Annual Labour Supplies Life", "exact": "The annual labour of every nation is the fund which originally supplies it with all the necessaries and conveniencies of life which it annually consumes, and which consist always either in the immediate produce of that labour, or in what is purchased with that produce from other nations.", "plainSmith": "The work people do each year is what gives a country the food, goods, comforts, and trade it lives on.", "smithMeans": "Smith begins by saying that a nation’s real supply does not come from gold or titles. It comes from the yearly work of its people and what that work can produce or trade for.", "keep": "We keep the move away from money-worship. Smith is right that real wealth begins in actual human work and real supply.", "challenge": "Supply alone is not enough. A society can produce a lot and still leave its people unstable, isolated, sick, indebted, or unable to live with dignity.", "answer": "Smith is right that work supplies life, but we have to go further. People do not only need goods. They need stable lives. A society should ask: does our work create food, shelter, care, safe movement, repair, and a better future, or does it only create more things while people stay unstable?", "doctrine": "Work should not only produce things. It should protect life over time.", "examples": {"smithWorks": "A farming town grows enough food, repairs tools, and trades extra crops for supplies. Smith’s point works because real labor creates real life support.", "smithFails": "A country produces record amounts of goods, but workers cannot afford rent or healthcare. The work exists, but life is still unstable.", "oursWorks": "A city counts food, housing, repair, care, and safe movement as part of its real work. It uses human capability to keep life steady.", "oursFails": "If society calls everything 'stability work' without clear priorities, people can be over-directed or confused. Safeguard: define basic needs first and keep participation transparent."}, "chart": {"chartType": "line", "chartTitle": "Production is not protection", "chartIdea": "This chart asks a direct life-protection question: after all the work, growth, and supply in the country, can people absorb a small emergency without borrowing, selling something, or falling behind?", "measureQuestion": "Can ordinary adults protect themselves from a small emergency?", "whatItShows": "From 2013 to 2025, the share of adults who could cover a $400 emergency with cash or equivalent improved but stayed fragile. The youngest adults end at only 45%, meaning most adults under 30 could not cover that small emergency in this way.", "whatItDoesNotProve": "This does not prove production is bad. It does not explain every cause of financial fragility. It shows that supply alone is not protection: work should help life become more secure over time.", "sourceNote": "Source: Federal Reserve Survey of Household Economics and Decisionmaking, adults who would cover a $400 emergency expense using cash or its equivalent. The table runs from 2013 to 2025 and includes age breakdowns.", "lineSeries": [{"key": "allAdults", "label": "All adults", "color": "#315c83"}, {"key": "age18to29", "label": "Ages 18–29", "color": "#8a4c25"}], "lineData": [{"year": "2013", "allAdults": 50, "age18to29": 41}, {"year": "2014", "allAdults": 53, "age18to29": 42}, {"year": "2015", "allAdults": 54, "age18to29": 45}, {"year": "2016", "allAdults": 56, "age18to29": 46}, {"year": "2017", "allAdults": 59, "age18to29": 50}, {"year": "2018", "allAdults": 61, "age18to29": 51}, {"year": "2019", "allAdults": 63, "age18to29": 50}, {"year": "2020", "allAdults": 64, "age18to29": 54}, {"year": "2021", "allAdults": 68, "age18to29": 58}, {"year": "2022", "allAdults": 63, "age18to29": 51}, {"year": "2023", "allAdults": 63, "age18to29": 52}, {"year": "2024", "allAdults": 63, "age18to29": 47}, {"year": "2025", "allAdults": 63, "age18to29": 45}], "valueSuffix": "%", "meaningNote": "This is not a poverty line or income chart. It is a practical stability test: could someone cover a small emergency with cash or its equivalent? If not, ordinary life is still exposed.", "dataSources": ["Federal Reserve SHED: $400 emergency expense, all adults and by age, 2013–2025."]}, "lessonTitle": "Where wealth comes from", "beforeRead": "Smith begins with a simple idea: a country lives from the work people do.", "simpleTakeaway": "Work creates supply, but supply is not enough. Work should help protect life over time.", "marginTitle": "Where wealth comes from", "marginIntro": "Smith begins by saying a nation lives from the work people do each year."}, {"id": "intro-02", "section": "Introduction", "number": "Passage 2 of 6", "title": "Supply Compared to Population", "exact": "According, therefore, as this produce, or what is purchased with it, bears a greater or smaller proportion to the number of those who are to consume it, the nation will be better or worse supplied with all the necessaries and conveniencies for which it has occasion.", "plainSmith": "A country is better or worse supplied depending on how much it produces or trades for compared with how many people need to live from it.", "smithMeans": "Smith is measuring national well-being by the relationship between supply and the number of people who must consume that supply.", "keep": "We keep the basic question of proportion. A society must ask whether enough exists for the people who depend on it.", "challenge": "Enough total supply does not mean fair access, stable access, or healthy access. Food can exist while people go hungry. Housing can exist while people sleep outside. Medicine can exist while people die without care.", "answer": "Smith is right that supply must be compared to the number of people who need it. But we cannot stop at total supply. We have to ask whether people can actually reach what exists. Food on shelves does not feed people who cannot afford it. Empty homes do not house people if rent blocks them.", "doctrine": "A society is not abundant if people cannot reach what they need.", "examples": {"smithWorks": "A village has enough grain stored for winter because it produced enough for its population. Supply compared to people matters.", "smithFails": "A city has enough apartments and food, but prices keep working families from accessing them.", "oursWorks": "A local system tracks not only how much food and housing exists, but who can actually reach it.", "oursFails": "Access programs can be abused or become unfair if rules are unclear. Safeguard: make access simple, public, reviewed, and tied to real need."}, "chart": {"chartType": "line", "chartTitle": "More renters are blocked by cost", "chartIdea": "This chart shows the share of renter households spending more than 30% of income on rent and utilities. It uses one unit: percent of renters. The point is simple: even in a wealthy society, many people cannot reach housing affordably.", "measureQuestion": "Can people actually reach the housing society has produced?", "whatItShows": "The share of renter households burdened by housing costs has grown over the long run, from roughly one quarter of renters in 1960 to about half of renters in recent years.", "whatItDoesNotProve": "This does not prove there is enough housing everywhere. It does not explain every cause of high rent. It proves the simpler point that supply and access are different: many people cannot reach housing affordably.", "sourceNote": "Sources: Harvard Joint Center for Housing Studies long-run renter cost-burden analysis; U.S. Census Bureau renter cost-burden reporting. Cost burden means spending more than 30% of income on rent and utilities.", "lineSeries": [{"key": "burdenShare", "label": "Cost-burdened renter households", "color": "#8a4c25"}], "lineData": [{"year": "1960", "burdenShare": 24}, {"year": "1980", "burdenShare": 35}, {"year": "2021", "burdenShare": 49}, {"year": "2023", "burdenShare": 50}, {"year": "2024", "burdenShare": 49}], "valueSuffix": "%", "dataSources": ["Harvard Joint Center for Housing Studies: long-run renter cost burdens.", "U.S. Census Bureau: renter households spending more than 30% of income on rent and utilities."]}, "lessonTitle": "Enough for the people", "beforeRead": "Smith asks whether what a country produces is enough for the people who must live from it.", "simpleTakeaway": "It is not enough for goods to exist. People must be able to reach what they need.", "marginTitle": "Enough for the people", "marginIntro": "Smith compares what a country produces with the number of people who must live from it."}, {"id": "intro-03", "section": "Introduction", "number": "Passage 3 of 6", "title": "Skill and Useful Labour", "exact": "But this proportion must in every nation be regulated by two different circumstances: first, by the skill, dexterity, and judgment with which its labour is generally applied; and, secondly, by the proportion between the number of those who are employed in useful labour, and that of those who are not so employed.", "plainSmith": "How well a country is supplied depends on how skillfully people work, and how many people are doing useful work compared with those who are not.", "smithMeans": "Smith gives two main causes of supply: the quality of labor and the share of people doing useful labor.", "keep": "We keep the importance of skill, judgment, training, and organized capability.", "challenge": "The phrase 'useful labour' is too narrow if it only means market-visible production. Care, prevention, repair, teaching, healing, and land stewardship are useful even when they do not look like profit-producing labor.", "answer": "Smith is right that skill and useful work matter. But useful work must mean more than work that produces goods for sale. Raising children, caring for elders, preventing violence, repairing homes, cleaning public spaces, restoring land, and teaching basic skills all help hold life together.", "doctrine": "Useful work is any work that helps life become more stable.", "examples": {"smithWorks": "A skilled carpenter builds stronger homes faster than an untrained person. Skill clearly improves supply.", "smithFails": "A caregiver keeps an elder safe every day, but the market may treat that work as low value or invisible.", "oursWorks": "A neighborhood counts repair, care, teaching, cleaning, and food work as real stability work.", "oursFails": "If every activity is called useful, priorities can blur. Safeguard: ask whether the work clearly lowers instability or protects life."}, "chart": {"chartType": "bar", "chartTitle": "One hidden form of useful work: unpaid family caregiving", "chartIdea": "This is one visible example of useful work the market does not fully account for. The numbers estimate the value of unpaid family caregiving, not every form of unpaid useful work.", "measureQuestion": "What useful work is invisible or undercounted if we only look at market wages?", "whatItShows": "AARP estimated unpaid family caregiving at about $600 billion in 2021 and about $1.01 trillion in 2024. That care supports families, hospitals, employers, and public systems.", "whatItDoesNotProve": "This does not count all useful work outside wages. It does not include every form of unpaid household labor, child-raising, neighborhood help, public-space maintenance, informal teaching, or prevention work.", "sourceNote": "Sources: AARP unpaid family caregiving valuation reports for 2021 and 2024.", "barData": [{"label": "2021", "value": 600}, {"label": "2024", "value": 1010}], "valuePrefix": "$", "valueSuffix": "B", "dataSources": ["AARP: Valuing the Invaluable, unpaid family caregiving estimates."], "meaningNote": "What the numbers account for: unpaid care by family caregivers, including help with daily activities, meals, transportation, medication, appointments, supervision, finances, and practical support for adults who need care. It is only one example of useful work society depends on without fully recognizing."}, "lessonTitle": "Useful work", "beforeRead": "Smith says supply depends on skill and how many people are doing useful labor.", "simpleTakeaway": "Useful work is more than market work. Care, repair, teaching, and prevention also hold life together.", "marginTitle": "Useful work", "marginIntro": "Smith says supply depends on skill and useful labor."}, {"id": "intro-04", "section": "Introduction", "number": "Passage 4 of 6", "title": "Productivity Is Not Justice", "exact": "Among civilized and thriving nations, on the contrary, though a great number of people do not labour at all, many of whom consume the produce of ten times, frequently of a hundred times, more labour than the greater part of those who work; yet the produce of the whole labour of the society is so great, that all are often abundantly supplied.", "plainSmith": "Smith says productive societies can make so much that even poor workers may have more goods than people in less productive societies. At the same time, he admits that many people who do not labor consume far more than the workers themselves.", "smithMeans": "Smith is making a comparison between societies. He is saying that high productivity can raise the general supply of goods. But inside that point, he also shows a serious inequality: some people consume the labor of many while others do the work.", "keep": "We keep the basic truth that better tools, skill, organization, and cooperation can create more goods and make life materially easier.", "challenge": "We reject using comparison to poorer conditions as proof of justice. Saying workers are better off than people somewhere else does not answer whether they are stable, respected, secure, or receiving a fair share of the life they help create.", "answer": "The Stability of Peoples asks a different question: does abundance become stable life for the people who produce it? If a society produces plenty while workers remain fragile and owners consume the labor of many, then productivity is being used to cover extraction.", "doctrine": "A society is not just because workers have more than the desperate elsewhere; it is just when the people who create abundance receive stable life from it.", "examples": {"smithWorks": "A society with better tools and organization can produce more food, clothing, housing materials, and medicine than a society with fewer tools. Smith’s point works when productivity truly expands life support.", "smithFails": "A worker may own more goods than people in poorer conditions elsewhere, but still live one emergency away from eviction, medical debt, hunger, or collapse.", "oursWorks": "A society uses productivity to shorten insecurity: better wages, safer housing, public care, food access, training, and time for family.", "oursFails": "Our response can become too focused on blaming owners and miss practical production needs. Safeguard: judge both extraction and supply. A stable people needs enough production and fair stability from that production."}, "chart": {"chartType": "line", "chartTitle": "Workers produced more, but pay did not rise the same way", "chartIdea": "This chart shows percent growth since 1973. Productivity means output per hour. Real hourly compensation means pay and benefits after inflation. The point is that producing more does not automatically mean workers receive stable life from what they produce.", "measureQuestion": "Do the people creating abundance receive stable life from it?", "whatItShows": "Productivity and compensation once moved more closely together, but after the 1970s productivity rose much faster than real hourly compensation.", "whatItDoesNotProve": "This does not prove productivity is bad. It does not prove every business owner is evil. It proves productivity by itself is not justice.", "sourceNote": "Source lane: Bureau of Labor Statistics productivity and real hourly compensation data for the nonfarm business sector; EPI productivity-pay gap presentation for historical comparison.", "lineSeries": [{"key": "productivityGrowth", "label": "Labor productivity growth", "color": "#315c83"}, {"key": "compensationGrowth", "label": "Real hourly compensation growth", "color": "#164b35"}], "lineData": [{"year": "1973", "productivityGrowth": 0, "compensationGrowth": 0}, {"year": "1990", "productivityGrowth": 30, "compensationGrowth": 9}, {"year": "2000", "productivityGrowth": 55, "compensationGrowth": 17}, {"year": "2010", "productivityGrowth": 77, "compensationGrowth": 28}, {"year": "2020", "productivityGrowth": 101, "compensationGrowth": 56}, {"year": "2024", "productivityGrowth": 112, "compensationGrowth": 62}], "valueSuffix": "%", "dataSources": ["BLS: labor productivity and real hourly compensation, nonfarm business sector.", "EPI: productivity-pay gap historical comparison."]}, "lessonTitle": "Productivity is not justice", "beforeRead": "Smith says productive societies can create much more abundance, but he also reveals a problem: some consume the labor of many.", "simpleTakeaway": "The people creating abundance should receive stable life from it.", "marginTitle": "Productivity is not justice", "marginIntro": "Smith shows that productive societies can create abundance while some consume the labor of many."}, {"id": "intro-05", "section": "Introduction", "number": "Passage 5 of 6", "title": "Smith’s Map, Our Map", "exact": "The causes of this improvement in the productive powers of labour, and the order according to which its produce is naturally distributed among the different ranks and conditions of men in the society, make the subject of the first book of this Inquiry.", "plainSmith": "Smith says Book I will study why labor becomes more productive and how what labor produces is divided among different ranks and conditions of people.", "smithMeans": "Smith is telling the reader the map of his inquiry. He will study production first, then how the product of labor is distributed through society.", "keep": "We keep the need for a clear map. A serious doctrine must show the reader what it is studying and why.", "challenge": "Smith’s map follows wealth: productivity, distribution, capital, policy, revenue, and debt. Our map has to follow stability: people, land, labor, care, movement, money, public responsibility, and long-term consequences.", "answer": "The Stability of Peoples needs its own map. We are not only asking how wealth is produced and divided. We are asking whether the whole system leaves people, land, and future generations more stable or more damaged.", "doctrine": "The old map followed wealth. The new map must follow stability.", "examples": {"smithWorks": "Smith’s map works because it organizes a huge subject. He tells the reader where the inquiry is going instead of leaving the argument scattered.", "smithFails": "A map of wealth can miss the things that decide whether life is actually stable: trauma, care, land damage, car dependency, debt pressure, public trust, and children’s conditions.", "oursWorks": "Our map helps each passage ask the same steady questions: what helps life, what creates instability, what must be changed, and what safeguards are needed.", "oursFails": "Our map can become too broad if everything is included at once. Safeguard: move page by page, keep each passage focused, and save only one clear doctrine line at a time."}, "chart": {"skipChart": true, "lineData": []}, "lessonTitle": "Smith’s map, our map", "beforeRead": "Smith tells the reader how his book will be organized. We use that to explain how our project must be organized.", "simpleTakeaway": "The old map followed wealth. The new map must follow stability.", "marginTitle": "Smith’s map, our map", "marginIntro": "Smith tells the reader how his book will be organized."}, {"id": "intro-06", "section": "Introduction", "number": "Passage 6 of 6", "title": "Public Revenue, Expense, and Debt", "exact": "The fifth and last book treats of the revenue of the sovereign, or commonwealth. In this book I have endeavoured to shew, first, what are the necessary expenses of the sovereign, or commonwealth... and, thirdly and lastly, what are the reasons and causes which have induced almost all modern governments to mortgage some part of this revenue, or to contract debts.", "plainSmith": "Smith says the final book studies public expenses, how society pays for them, and why governments take on debt.", "smithMeans": "Smith ends the introduction by turning from private production to public responsibility: what the commonwealth must pay for, who contributes, and what debt does to real wealth.", "keep": "We keep the idea that public systems have necessary expenses and that debt affects the future.", "challenge": "Public expense cannot be judged only as burden. Some public spending prevents greater instability. Some debt is destructive extraction, but some investment prevents collapse.", "answer": "Smith is right that public spending and debt matter. But we should not treat all public expense as waste. Some spending prevents bigger damage later. Some debt is dangerous because it feeds extraction. Some debt may be justified if it prevents collapse and builds stable foundations.", "doctrine": "Public spending is justified when it protects life and lowers future instability.", "examples": {"smithWorks": "A government that tracks spending, taxes, and debt can avoid waste and future burden.", "smithFails": "Fear of public cost can block repairs until bridges fail, people become homeless, or health problems become emergencies.", "oursWorks": "A city spends early on drainage, clinics, housing repair, and child support so bigger crises are prevented.", "oursFails": "Calling spending 'stability' can hide waste or corruption. Safeguard: require proof that spending lowers real instability over time."}, "chart": {"chartType": "line", "chartTitle": "Child poverty kept returning across decades", "chartIdea": "This long-run chart uses the official poverty rate for related children in families. It shows that child poverty is not one bad year. It is a repeated failure that society has seen, reduced at times, and allowed to return.", "measureQuestion": "Does public responsibility prevent child instability over time?", "whatItShows": "Child poverty fell sharply after the early 1960s, but it repeatedly rose again in later decades. The line shows many chances to make child poverty unacceptable, yet the problem kept returning.", "whatItDoesNotProve": "This does not prove every public program works or that poverty has one cause. It shows that child poverty is a long-term public responsibility, not a temporary surprise.", "sourceNote": "Source: U.S. Census Bureau child poverty data via FRED series HSTPOVARU18YRCFBPPP, related children in families below the poverty threshold. This is the official poverty measure, not the Supplemental Poverty Measure.", "lineSeries": [{"key": "childPoverty", "label": "Child poverty rate", "color": "#8a4c25"}], "lineData": [{"year": "1959", "childPoverty": 26.9}, {"year": "1969", "childPoverty": 13.8}, {"year": "1983", "childPoverty": 22.3}, {"year": "1993", "childPoverty": 22.7}, {"year": "2000", "childPoverty": 16.2}, {"year": "2010", "childPoverty": 22.0}, {"year": "2019", "childPoverty": 14.4}, {"year": "2020", "childPoverty": 15.7}, {"year": "2021", "childPoverty": 15.0}, {"year": "2022", "childPoverty": 14.8}, {"year": "2023", "childPoverty": 15.0}, {"year": "2024", "childPoverty": 14.0}], "valueSuffix": "%", "meaningNote": "The sharp 2021 Supplemental Poverty Measure drop from pandemic-era supports is important, but it uses a different poverty measure. This main chart stays with one long-run official measure so the decades are easier to compare.", "dataSources": ["FRED / U.S. Census Bureau: Poverty Status of People by Age, Related Children in Families, Below Poverty Threshold, 1959–2024."]}, "lessonTitle": "Public responsibility", "beforeRead": "Smith points to government revenue, public expenses, and debt.", "simpleTakeaway": "Public spending should be judged by whether it protects life and prevents future instability.", "marginTitle": "Public responsibility", "marginIntro": "Smith points to public expenses, revenue, and debt."}], "glossary": [{"term": "Annual labour", "smith": "The work done by a nation’s people in a year.", "plain": "The yearly work people do.", "stability": "Living capability used to supply and stabilize life."}, {"term": "Necessaries and conveniencies", "smith": "The goods and comforts society consumes.", "plain": "What people need and what makes life easier.", "stability": "The foundations of life: food, shelter, care, movement, safety, land, and dignity."}, {"term": "Useful labour", "smith": "Labor that contributes to productive supply.", "plain": "Work that helps produce what society uses.", "stability": "Any contribution that lowers instability over time, including care, repair, teaching, healing, and prevention."}, {"term": "Capital stock", "smith": "Accumulated resources that put labor into motion.", "plain": "Stored wealth or tools used to make more things happen.", "stability": "Stored capability that should serve durable life, not private domination."}, {"term": "Revenue of the sovereign", "smith": "The income of the government or commonwealth.", "plain": "Public money used for public responsibilities.", "stability": "Shared resources used to protect the foundations of life."}, {"term": "Efficiency", "smith": "Greater productive power of labor.", "plain": "Making more with skill and organization.", "stability": "Lowering total instability across the whole life of consequences."}], "doctrine": ["This doctrine is written plainly for all peoples, not only educated readers.", "If an idea is meant to serve everyone, the words must be reachable by everyone.", "People are shaped by what happens to them. A stable society responds early, fairly, and with flexibility.", "A stable society does not pretend all damage can be prevented. It prepares to help after damage appears, while protecting others from preventable harm.", "A people is not stable because it produces; it is stable when its production protects life across time.", "Abundance is false when people cannot access the foundations of life.", "Useful labor is any contribution that lowers total instability across time.", "Extraction begins when one person consumes the labor of many without restoring stability to the many.", "Abundance without stability is organized insecurity.", "Distribution must be judged by stability, not only by income.", "Public expense is justified when it secures the foundations of durable life.", "True efficiency must be measured across the whole life of its consequences.", "Efficiency does not mean lowering immediate cost. It means lowering total instability across time.", "Money may serve exchange, but it must never govern existence.", "Labor is not merely a cost of production; it is the living capacity of a people.", "A society is not just because workers have more than the desperate elsewhere; it is just when the people who create abundance receive stable life from it.", "The old map followed wealth. The new map must follow stability."], "readerMode": "modalBlocks", "sections": [{"id": "introduction", "title": "Introduction", "subtitle": "Smith’s opening argument about labor, supply, productivity, wealth, and public responsibility.", "passageIds": ["intro-01", "intro-02", "intro-03", "intro-04", "intro-05", "intro-06"]}, {"id": "book-i", "title": "Book I", "subtitle": "Labour, division of labour, wages, profit, and rent.", "passageIds": []}, {"id": "book-ii", "title": "Book II", "subtitle": "Capital stock, accumulation, and productive labour.", "passageIds": []}, {"id": "book-iii", "title": "Book III", "subtitle": "Town, country, agriculture, cities, and development.", "passageIds": []}, {"id": "book-iv", "title": "Book IV", "subtitle": "Mercantile systems, trade, policy, and colonies.", "passageIds": []}, {"id": "book-v", "title": "Book V", "subtitle": "Public expenses, revenue, taxes, and debt.", "passageIds": []}]};</script>
+<script>
+
+(function(){
+const DATA=window.SOP_DATA||{},passages=DATA.passages||[],sections=DATA.sections||[];
+let selected=null,currentReadIndex=0;
+
+function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function route(){const raw=(location.hash||"#start").replace("#","").split(":")[0];return ["start","read","ideas","help"].includes(raw)?raw:"start"}
+function renderRoute(){const r=route();document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelector("#page-"+r)?.classList.add("active");document.querySelectorAll("[data-route]").forEach(a=>a.classList.toggle("active",a.dataset.route===r));if(!location.hash.includes(":"))scrollTo({top:0,behavior:"instant"})}
+function byId(id){return passages.find(p=>p.id===id)}
+function setCurrentById(id){const idx=passages.findIndex(p=>p.id===id);if(idx>=0)currentReadIndex=idx}
+
+function closeSectionsDrawer(){document.querySelector("#sectionsDrawer")?.classList.remove("open")}
+function wireSectionsDrawer(){document.querySelector("#sectionsToggle")?.addEventListener("click",()=>document.querySelector("#sectionsDrawer")?.classList.toggle("open"))}
+
+function renderNav(){
+  const root=document.querySelector("#sectionNav"); if(!root)return;
+  root.innerHTML=sections.map((s)=>{
+    const ids=s.passageIds||[];
+    const links=ids.length?ids.map(id=>{
+      const p=byId(id);
+      return p?`<button data-jump="${esc(id)}">${esc(p.marginTitle||p.title)}</button>`:"";
+    }).join(""):`<button disabled>Coming later</button>`;
+    return `<div><button class="secbtn" data-sec="${esc(s.id)}"><span>${esc(s.title)}<small>${esc(s.subtitle||"")} ${ids.length?"· "+ids.length+" notes":""}</small></span><span>▾</span></button><div class="passages" id="nav-${esc(s.id)}">${links}</div></div>`;
+  }).join("");
+
+  root.querySelectorAll(".secbtn").forEach(b=>b.onclick=()=>document.querySelector("#nav-"+CSS.escape(b.dataset.sec))?.classList.toggle("open"));
+  root.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.jump;
+    setCurrentById(id);
+    location.hash="read:"+id;
+    document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"center"});
+    closeSectionsDrawer();
+  });
+}
+
+function renderBook(){
+  const root=document.querySelector("#bookRoot"); if(!root)return;
+  root.innerHTML=sections.map(s=>{
+    const ids=s.passageIds||[]; if(!ids.length)return "";
+    const paras=ids.map(id=>{
+      const p=byId(id); if(!p)return "";
+      return `<div class="para" id="${esc(id)}"><p>${esc(p.exact)}</p><button class="star" data-note="${esc(id)}" title="Open margin note">✦</button></div>`;
+    }).join("");
+    return `<section><div class="book-head"><h2>${esc(s.title)} of The Wealth of Nations</h2></div><div class="book-text">${paras}</div></section>`;
+  }).join("");
+  root.querySelectorAll("[data-note]").forEach(b=>b.onclick=()=>selectNote(b.dataset.note));
+}
+
+
+function getLineSeries(c){
+  if(Array.isArray(c?.lineSeries) && c.lineSeries.length) return c.lineSeries;
+  return [
+    {key:"gdpIndex",label:"Real GDP per capita",color:"#315c83"},
+    {key:"incomeIndex",label:"Real median household income",color:"#164b35"}
+  ];
+}
+
+function fmtVal(v,c){
+  const pre=c?.valuePrefix||"";
+  const suf=c?.valueSuffix||"";
+  return `${pre}${v}${suf}`;
+}
+
+function renderLineChart(c){
+  const rows=c?.lineData||[];
+  if(!rows.length)return `<p class="chartnote">No chart added yet. This claim needs a data check first.</p>`;
+  const series=getLineSeries(c);
+  const W=520,H=260,padL=48,padR=18,padT=24,padB=42;
+  const vals=rows.flatMap(r=>series.map(s=>r[s.key])).filter(v=>typeof v==="number");
+  const min=Math.min(0,Math.floor(Math.min(...vals)/10)*10);
+  const max=Math.ceil(Math.max(...vals)/10)*10;
+  const x=i=>padL+(i*(W-padL-padR)/(Math.max(1,rows.length-1)));
+  const y=v=>padT+(max-v)*(H-padT-padB)/(max-min || 1);
+  const makePath=key=>rows.map((r,i)=>`${i===0?"M":"L"} ${x(i).toFixed(1)} ${y(r[key]).toFixed(1)}`).join(" ");
+  const grid=[min,Math.round((min+max)/2),max].map(v=>`<line x1="${padL}" x2="${W-padR}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="rgba(21,33,27,.13)" stroke-width="1"/><text x="8" y="${(y(v)+4).toFixed(1)}" font-size="11" fill="#657066">${fmtVal(v,c)}</text>`).join("");
+  const labels=rows.map((r,i)=>`<text x="${x(i).toFixed(1)}" y="${H-16}" font-size="11" fill="#657066" text-anchor="middle">${r.year}</text>`).join("");
+  const legend=`<div class="chart-legend">${series.map(s=>`<span class="legend-item"><span class="legend-swatch" style="background:${s.color}"></span>${esc(s.label)}</span>`).join("")}</div>`;
+  const paths=series.map(s=>{
+    const pts=rows.map((r,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(r[s.key]).toFixed(1)}" r="3.5" fill="${s.color}"><title>${esc(s.label)} ${fmtVal(r[s.key],c)}</title></circle>`).join("");
+    return `<path d="${makePath(s.key)}" fill="none" stroke="${s.color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${pts}`;
+  }).join("");
+  return `${legend}<svg class="svg-line-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(c.chartTitle||"Line chart")}"><rect x="0" y="0" width="${W}" height="${H}" rx="16" fill="#fff"/>${grid}<line x1="${padL}" x2="${W-padR}" y1="${H-padB}" y2="${H-padB}" stroke="rgba(21,33,27,.25)"/><line x1="${padL}" x2="${padL}" y1="${padT}" y2="${H-padB}" stroke="rgba(21,33,27,.25)"/>${paths}${labels}</svg>`;
+}
+
+function renderBarChart(c){
+  const rows=c?.barData||[];
+  if(!rows.length)return `<p class="chartnote">No chart added yet. This claim needs a data check first.</p>`;
+  const max=Math.max(...rows.map(r=>r.value));
+  return `<div class="vchart">${rows.map(r=>{
+    const pct=Math.max(4,Math.round((r.value/max)*100));
+    return `<div class="row"><div>${esc(r.label)}</div><div class="track"><div class="fill" style="width:${pct}%"></div></div><div class="val">${fmtVal(r.value,c)}</div></div>`;
+  }).join("")}</div>`;
+}
+
+
+function renderCardChart(c){
+  const cards=c?.cards||[];
+  if(!cards.length)return `<p class="chartnote">No evidence cards added yet.</p>`;
+  return `<div class="fact-cards">${cards.map(card=>`
+    <div class="fact-card">
+      <div class="flabel">${esc(card.label)}</div>
+      <div class="fvalue">${esc(card.value)}</div>
+      <div class="fcaption">${esc(card.caption)}</div>
+    </div>
+  `).join("")}</div>`;
+}
+
+function renderEvidenceChart(c){
+  if(c?.skipChart)return "";
+  if(c?.chartType==="bar")return renderBarChart(c);
+  if(c?.chartType==="cards")return renderCardChart(c);
+  return renderLineChart(c);
+}
+
+function chartSectionHTML(c){
+  if(c?.skipChart)return "";
+  return `<div class="note-flow-cue">↓</div>
+  <div class="note chart"><h3>Evidence we can check</h3><p><strong>${esc(c.chartTitle)}</strong></p>${renderEvidenceChart(c)}<p>${esc(c.chartIdea)}</p><p><strong>Question:</strong> ${esc(c.measureQuestion)}</p><p><strong>What this shows:</strong> ${esc(c.whatItShows||"")}</p><p><strong>What this does not prove:</strong> ${esc(c.whatItDoesNotProve||"")}</p>${c.meaningNote?`<div class="meaning-note">${esc(c.meaningNote)}</div>`:""}<div class="chart-source">${esc(c.sourceNote||"")}</div></div>`;
+}
+
+function noteHTML(p){
+  const ex=p.examples||{},c=p.chart||{};
+  return `<div class="note plain"><h3>Plain meaning</h3><p>${esc(p.plainSmith)}</p></div>
+  <div class="note-flow-cue">↓</div>
+  <div class="note"><h3>Why it matters</h3><p>${esc(p.smithMeans)}</p></div>
+  <div class="note-flow-cue">↓</div>
+  <div class="note"><h3>What we keep</h3><p>${esc(p.keep)}</p></div>
+  <div class="note-flow-cue">↓</div>
+  <div class="note challenge"><h3>What we question</h3><p>${esc(p.challenge)}</p></div>
+  <div class="note-flow-cue">↓</div>
+  <div class="note answer"><h3>Our answer</h3><p>${esc(p.answer)}</p></div>
+  <div class="note-flow-cue">↓</div>
+  <div class="note"><h3>Examples and safeguards</h3><div class="eg"><div class="good"><strong>Smith works</strong>${esc(ex.smithWorks)}</div><div class="bad"><strong>Smith fails</strong>${esc(ex.smithFails)}</div><div class="good"><strong>Our idea works</strong>${esc(ex.oursWorks)}</div><div class="warning"><strong>Needs safeguard</strong>${esc(ex.oursFails)}</div></div></div>
+  ${chartSectionHTML(c)}
+  <div class="note-flow-cue">↓</div>
+  <div class="note takeaway"><h3>Main takeaway</h3><p>${esc(p.simpleTakeaway||p.doctrine)}</p><p class="doctrine-line">${esc(p.doctrine)}</p></div>
+  <div class="mactions">
+  <button class="primary" onclick="closeNote()">Continue reading</button>
+</div>`;
+}
+
+function marginEmptyHTML(){
+  return `<div class="empty margin-empty-reset"><h2>Margin notes</h2><p>Select a margin mark beside Smith’s text. This side panel will show the plain meaning, our answer, examples, evidence, and takeaway.</p></div>`;
+}
+
+function selectNote(id){
+  const p=byId(id); if(!p)return;
+  selected=id; setCurrentById(id);
+  document.querySelectorAll(".star").forEach(b=>b.classList.toggle("active",b.dataset.note===id));
+  const content=`<h2>${esc(p.marginTitle||p.title)}</h2><p>${esc(p.marginIntro||"")}</p>`+noteHTML(p);
+  const margin=document.querySelector("#margin");
+if(margin) {
+  margin.innerHTML=content;
+  margin.scrollTop = 0;
+}
+
+const sheet=document.querySelector("#sheetBody");
+if(sheet) {
+  sheet.innerHTML=content;
+  sheet.scrollTop = 0;
+}
+const isMobileSheet = matchMedia("(max-width:1060px)").matches;
+const sheetBox = document.querySelector("#sheet");
+const sheetBody = document.querySelector("#sheetBody");
+
+if (isMobileSheet && sheetBox) {
+  sheetBox.classList.add("open");
+
+  requestAnimationFrame(() => {
+    sheetBox.scrollTop = 0;
+    if (sheetBody) sheetBody.scrollTop = 0;
+
+    requestAnimationFrame(() => {
+      sheetBox.scrollTop = 0;
+      if (sheetBody) sheetBody.scrollTop = 0;
+    });
+  });
+}
+}
+
+function closeNote(){
+  const id=selected;
+  document.querySelector("#sheet")?.classList.remove("open");
+  document.querySelectorAll(".star").forEach(b=>b.classList.remove("active"));
+  const margin=document.querySelector("#margin"); if(margin)margin.innerHTML=marginEmptyHTML();
+  if(id)document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+window.closeNote = closeNote;
+
+function wireNoteActions(){document.querySelectorAll("#continueReading").forEach(btn=>btn.onclick=()=>closeNote())}
+
+function renderDoctrine(){
+  const root=document.querySelector("#doctrine"); if(!root)return;
+  root.innerHTML=`<div class="list doctrines">`+(DATA.doctrine||[]).map(d=>`<div class="doctrine"><p>${esc(d)}</p></div>`).join("")+`</div>`;
+}
+
+function renderGlossary(){
+  const root=document.querySelector("#glossary"); if(!root)return;
+  root.innerHTML=`<div class="list">`+(DATA.glossary||[]).map(g=>`<article class="gloss"><div class="term">${esc(g.term)}</div><div><p><strong>Smith:</strong> ${esc(g.smith)}</p><p><strong>Plain:</strong> ${esc(g.plain)}</p><p><strong>Stability:</strong> ${esc(g.stability)}</p></div></article>`).join("")+`</div>`;
+}
+
+function moveReading(delta){
+  const next=Math.max(0,Math.min(passages.length-1,currentReadIndex+delta));
+  const p=passages[next];
+  if(p){currentReadIndex=next;location.hash="read:"+p.id;document.getElementById(p.id)?.scrollIntoView({behavior:"smooth",block:"center"})}
+}
+
+function wireReadControls(){
+  document.querySelector("#readPrev")?.addEventListener("click",()=>moveReading(-1));
+  document.querySelector("#readNext")?.addEventListener("click",()=>moveReading(1));
+}
+
+addEventListener("hashchange",()=>{
+  const parts=(location.hash||"").replace("#","").split(":");
+  renderRoute();
+  if(parts[0]==="read"&&parts[1]){
+    setCurrentById(parts[1]);
+    setTimeout(()=>document.getElementById(parts[1])?.scrollIntoView({behavior:"smooth",block:"center"}),80);
+  }
+});
+
+document.querySelector("#closeSheet")?.addEventListener("click",()=>closeNote());
+document.querySelector("#startReadingBtn")?.addEventListener("click",()=>document.querySelector(".book-text .para")?.scrollIntoView({behavior:"smooth",block:"start"}));
+renderNav();renderBook();renderDoctrine();renderGlossary();wireReadControls();wireSectionsDrawer();renderRoute();
+})();
+
+</script>
+</body>
+</html>
